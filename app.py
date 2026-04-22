@@ -38,6 +38,17 @@ st.markdown(
         font-weight: bold;
         display: inline-block;
     }
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        color: #60a5fa;
+        font-size: 14px;
+        background-color: #0b1220;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -89,3 +100,5 @@ with col2:
             st.image(uploaded_file, use_container_width=True, caption="Original X-Ray")
     else:
         st.info("Upload an X-Ray to view results")
+
+st.markdown('<div class="footer">Developed by Eng. Hassan Masoud</div>', unsafe_allow_html=True)
