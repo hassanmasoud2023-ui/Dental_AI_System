@@ -74,7 +74,6 @@ st.divider()
 col1, col2 = st.columns([1, 2], gap="large")
 
 with col1:
-    st.subheader("⚙️ Diagnosis Controls")
     conf_value = 0.50
     uploaded_file = st.file_uploader("Upload X-Ray Image", type=["jpg", "jpeg", "png"])
     analyze_btn = st.button("Analyze Scan / تحليل", type="primary", use_container_width=True)
@@ -103,4 +102,4 @@ with col2:
     else:
         st.info("Upload an X-Ray to view results")
 
-st.markdown('<div class="footer">Developed by Eng. Hassan Masoud</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer">Developed By Eng. Hassan Masoud</div>', unsafe_allow_html=True)
