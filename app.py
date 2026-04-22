@@ -80,7 +80,9 @@ with col1:
     analyze_btn = st.button("Analyze Scan / تحليل", type="primary", use_container_width=True)
 
 with col2:
-    if uploaded_file is not None:
+    if analyze_btn and uploaded_file is None:
+        st.error("⚠️ من فضلك قم برفع صورة الأشعة أولاً قبل الضغط على تحليل!")
+    elif uploaded_file is not None:
         if analyze_btn:
             with st.spinner("Processing..."):
                 image = Image.open(uploaded_file).convert("RGB")
