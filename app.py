@@ -63,6 +63,8 @@ def load_model():
         return YOLO(model_path)
     return None
 
+st.write("Files in current directory:", os.listdir('.'))
+
 model = load_model()
 
 diagnoses = {
