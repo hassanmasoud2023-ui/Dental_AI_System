@@ -1,6 +1,7 @@
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
+import numpy as np
 
 st.set_page_config(
     page_title="Dental Diagnostic AI",
@@ -56,15 +57,20 @@ st.markdown(
 
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")
+    try:
+        return YOLO("best.pt")
+    except:
+        return None
 
 model = load_model()
 
 diagnoses = {
-    "Cavity": {"ar": "تسوس", "en": "Cavity"},
-    "Fillings": {"ar": "حشوات أسنان", "en": "Fillings"},
-    "Impacted Tooth": {"ar": "ضرس عقل مطمور", "en": "Impacted Tooth"},
-    "Implant": {"ar": "زراعة أسنان", "en": "Dental Implant"}
+    "Caries": {"ar": "تسوس", "en": "Caries"},
+    "Infection": {"ar": "عدوى", "en": "Infection"},
+    "Fractured Teeth": {"ar": "كسر في السن", "en": "Fractured Teeth"},
+    "Impacted teeth": {"ar": "سن مطمور", "en": "Impacted teeth"},
+    "Healthy Teeth": {"ar": "سن سليم", "en": "Healthy Teeth"},
+    "BDC-BDR": {"ar": "تغير في كثافة العظام", "en": "BDC-BDR"}
 }
 
 st.markdown("<h1 style='text-align: center; color: #60a5fa;'>🦷 Dental Diagnostic AI</h1>", unsafe_allow_html=True)
@@ -84,19 +90,25 @@ with col2:
     elif uploaded_file is not None:
         if analyze_btn:
             with st.spinner("Processing..."):
-                image = Image.open(uploaded_file).convert("RGB")
-                results = model.predict(source=image, conf=conf_value)[0]
-                res_plotted = results.plot()[..., ::-1]
-                st.markdown("<div class='badge-container'><span class='ai-badge'>AI-Assisted Detection</span></div>", unsafe_allow_html=True)
-                st.image(res_plotted, use_container_width=True, caption="Analysis Result")
-                detected_classes = set([model.names[int(box.cls)] for box in results.boxes])
-                st.subheader("📊 Detailed Clinical Report")
-                if not detected_classes:
-                    st.info("No actionable findings detected.")
+                if model is not None:
+                    image = Image.open(uploaded_file).convert("RGB")
+                    results = model.predict(source=image, conf=conf_value)[0]
+                    res_plotted = results.plot()
+                    
+                    st.markdown("<div class='badge-container'><span class='ai-badge'>AI-Assisted Detection</span></div>", unsafe_allow_html=True)
+                    st.image(res_plotted, channels="BGR", use_container_width=True, caption="Analysis Result")
+                    
+                    detected_classes = set([model.names[int(box.cls)] for box in results.boxes])
+                    
+                    st.subheader("📊 Detailed Clinical Report")
+                    if not detected_classes:
+                        st.info("No actionable findings detected.")
+                    else:
+                        for cls_name in detected_classes:
+                            diag_info = diagnoses.get(cls_name, {"ar": cls_name, "en": cls_name})
+                            st.success(f"**{diag_info['en']}** | {diag_info['ar']}")
                 else:
-                    for cls_name in detected_classes:
-                        diag_info = diagnoses.get(cls_name, {"ar": cls_name, "en": cls_name})
-                        st.success(f"**{diag_info['en']}** | {diag_info['ar']}")
+                    st.error("Error: Model could not be loaded.")
         else:
             st.image(uploaded_file, use_container_width=True, caption="Original X-Ray")
     else:
