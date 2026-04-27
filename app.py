@@ -2,7 +2,6 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-import os
 
 st.set_page_config(
     page_title="Dental Diagnostic AI",
@@ -58,13 +57,10 @@ st.markdown(
 
 @st.cache_resource
 def load_model():
-    model_path = "best.pt"
     try:
-        if os.path.exists(model_path):
-            return YOLO(model_path)
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-    return None
+        return YOLO("best.pt")
+    except:
+        return None
 
 model = load_model()
 
@@ -90,7 +86,7 @@ with col1:
 
 with col2:
     if analyze_btn and uploaded_file is None:
-        st.error("⚠️ من فضلك قم برفع صورة الأشعة أولاً!")
+        st.error("⚠️ من فضلك قم برفع صورة الأشعة أولاً قبل الضغط على تحليل!")
     elif uploaded_file is not None:
         if analyze_btn:
             with st.spinner("Processing..."):
@@ -112,7 +108,7 @@ with col2:
                             diag_info = diagnoses.get(cls_name, {"ar": cls_name, "en": cls_name})
                             st.success(f"**{diag_info['en']}** | {diag_info['ar']}")
                 else:
-                    st.error("Error: Model file 'best.pt' not found or could not be loaded.")
+                    st.error("Error: Model could not be loaded.")
         else:
             st.image(uploaded_file, use_container_width=True, caption="Original X-Ray")
     else:
