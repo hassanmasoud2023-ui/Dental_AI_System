@@ -1,1 +1,13 @@
 libglib2.0-0
+libgthread-2.0-0
+libgtk-3-0
+libsm6
+libxext6
+libxrender-dev
+libgomp1
+libglib2.0-dev
+libpcre3
+libffi7
+libglib2.0-data
+shared-mime-info
+pkg-config
