@@ -1,13 +1,23 @@
+# Core OpenCV dependencies
 libglib2.0-0
 libgthread-2.0-0
 libgtk-3-0
 libsm6
 libxext6
 libxrender-dev
+
+# GLIBC & threading
 libgomp1
 libglib2.0-dev
 libpcre3
-libffi7
+libffi8
+
+# Graphics & display
+libgl1-mesa-glx
 libglib2.0-data
-shared-mime-info
 pkg-config
+
+# Python & pip tools
+python3-pip
+python3-dev
+python3-venv
