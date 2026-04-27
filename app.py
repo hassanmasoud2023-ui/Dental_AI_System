@@ -58,9 +58,12 @@ st.markdown(
 
 @st.cache_resource
 def load_model():
-    model_path = "best .pt"
-    if os.path.exists(model_path):
-        return YOLO(model_path)
+    model_path = "best.pt"
+    try:
+        if os.path.exists(model_path):
+            return YOLO(model_path)
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
     return None
 
 model = load_model()
@@ -109,7 +112,7 @@ with col2:
                             diag_info = diagnoses.get(cls_name, {"ar": cls_name, "en": cls_name})
                             st.success(f"**{diag_info['en']}** | {diag_info['ar']}")
                 else:
-                    st.error("Error: Model file 'best .pt' not found in repository.")
+                    st.error("Error: Model file 'best.pt' not found or could not be loaded.")
         else:
             st.image(uploaded_file, use_container_width=True, caption="Original X-Ray")
     else:
