@@ -116,4 +116,3 @@ with col2:
         st.info("Upload an X-Ray to view results")
 
 st.markdown('<div class="footer">Developed By Eng. Hassan Masoud</div>', unsafe_allow_html=True)
- ابعت الكود كامل بعد التعديل اللي قولت عليه الاولاني علشان نعرف فين المشكله وابعت بدون كومنتس
