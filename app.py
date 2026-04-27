@@ -1,6 +1,8 @@
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
+import gdown
+import os
 
 st.set_page_config(
     page_title="Dental Diagnostic AI",
@@ -56,7 +58,11 @@ st.markdown(
 
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")
+    url = "https://drive.google.com/file/d/1ri0Cav9Oh0qYN1pedBh_Cda1GAypTYR1/view?usp=drive_link"
+    output = "best.pt"
+    if not os.path.exists(output):
+        gdown.download(url, output, quiet=False)
+    return YOLO(output)
 
 model = load_model()
 
