@@ -76,7 +76,7 @@ st.divider()
 col1, col2 = st.columns([1, 2], gap="large")
 
 with col1:
-    conf_value = 0.50
+    conf_value = 0.80 
     uploaded_file = st.file_uploader("Upload X-Ray Image", type=["jpg", "jpeg", "png"])
     analyze_btn = st.button("Analyze Scan / تحليل", type="primary", use_container_width=True)
 
@@ -94,7 +94,7 @@ with col2:
                 detected_classes = set([model.names[int(box.cls)] for box in results.boxes])
                 st.subheader("📊 Detailed Clinical Report")
                 if not detected_classes:
-                    st.info("No actionable findings detected.")
+                    st.info("No actionable findings detected at this confidence level.")
                 else:
                     for cls_name in detected_classes:
                         diag_info = diagnoses.get(cls_name, {"ar": cls_name, "en": cls_name})
